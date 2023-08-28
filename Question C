@@ -1,0 +1,48 @@
+import java.util.*;
+public class Main{
+   public static void main(String [] args){
+   	 Scanner sc = new Scanner(System.in);
+   	 long m= sc.nextLong();
+   	 int n = sc.nextInt();
+   	 long ans= fibmodulo(n,m);
+   	 System.out.print(ans);
+   }
+   public static long fibmodulo(int n,long m){
+   	  if(n==3208) return 13;
+   	  if(n==3209) return 17;
+   	  if(n==3210) return 23;
+   	  int M[][]={{119,-131,1341,-132},{1,0,0,0},{0,1,0,0},{0,0,0,1}};
+   	  int temp[][] = powermod(M,n-3210,m);
+   	  int vector[] = {23,17,13,1};
+   	  int result[]= new int[4];
+   	  for(int i=0;i<4;i++){
+   	  	for(int j=0;j<4;j++){
+   	  		result[i]= (int)((result[i]+temp[i][j]*vector[j])%m);
+   	  	}
+   	  }
+   	  return result[0];
+   }
+   public static int [][] powermod(int M[][],int exponent,long m){
+   	 if(exponent==1) return M;
+   	 if(exponent%2==0){
+   	 	int half[][]= powermod(M,exponent/2,m);
+   	 	return mm(half,half,m);
+   	 }
+   	 else{
+   	 	int half[][]=powermod(M,(exponent-1)/2,m);
+   	 	return mm(mm(half,half,m),M,m);
+   	 }
+   }
+   public static int[][] mm(int a[][],int b[][],long m){
+   	 int c[][] = new int[4][4];
+   	 for(int i=0;i<4;i++){
+   	 	for(int j=0;j<4;j++){
+   	 		c[i][j]=0;
+   	 		for(int k=0;k<4;k++){
+   	 			c[i][j]=(int)((c[i][j]+a[i][k]*b[k][j])%m);
+   	 		}
+   	 	}
+   	 }
+   	 return c;
+   }
+}
